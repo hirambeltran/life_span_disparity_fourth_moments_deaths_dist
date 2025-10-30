@@ -1,64 +1,8 @@
 library("data.table")
 library("latticeExtra")
-library(stats)
-library(foreign)
-library(xtable)
-library(stargazer)
 library(dplyr)
-
-library("purrr")
-library(modelr)
 library(tidyverse)
-
-library("jtools")
-library(dplyr)
-library(broom)
-library("huxtable")
 library("zoo")
-
-#setwd("C:/Users/Hiram/Box Sync/LAMBdA Dataset/Validation Tests LAMBdA_HMD_CDLT")
-
-
-
-#load("Data/data_WHO_Hakkert_approx.RData")
-#load("Data/data_HMD_Hakkert_approx.RData")
-#load("Data/data_HMD_Hl_e0.RData")
-#with(data.HakkertH,table(ctry))
-#with(data.Hl.lne0,table(ctry))
-
-
-
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-
-# 1. Human Mortality Database
-
-# <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-setwd("E:/Box Sync/Beltran-Sanchez/Human Mort Database")
-#setwd("C:/Users/beltrans/Box/Beltran-Sanchez/Human Mort Database")
-load("HMD1x1_period_LT.RData")
-hmd1x1<-data.table(hmd1x1.per)
-hmd1x1[,list(min.yr=min(Year),max.yr=max(Year)),by=c("ctry")]
-
-exclude<-c("ISL","FRACNP","DEUTNP","NZL_MA","NZL_NM","GBR_NP","GBRCENW","GBR_SCO","GBR_NIR")
-hmd1x1<-subset(hmd1x1,!(ctry %in% exclude))
-rm(exclude)
-#View(hmd1x1[ctry=="FRATNP" & sex=="Female" & Year=="1816",])
-
-# There is no life table data for Belgium in 1914-1919
-hmd1x1<- hmd1x1[!(ctry=="BEL" & Year %in% c(1914:1919)),]
-hmd1x1<- data.table(hmd1x1[!(ctry=="BEL" & Year %in% c(1914:1919)),])
-
-
-
-
-
-
-setwd("E:/Box Sync/Beltran-Sanchez/Oscar Fernandez/Skewness-Kurtosis/")
-#setwd("C:/Users/beltrans/Box/Beltran-Sanchez/Oscar Fernandez/Skewness-Kurtosis/")
-library(zoo) # needed to compute rolling sums
-
-save(hmd1x1 %>% filter(Year<=2019), file="Programs/ForRepository/HMD_period_upto2019.RData")
-load()
 
 # <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
@@ -138,7 +82,4 @@ HMD.res[,sigma:=sqrt(sigma2)]
 HMD.res[,mu3.hat:=mu3/(sigma^3)]
 HMD.res[,mu4.hat:=mu4/(sigma^4)]
 HMD.res
-
-save(HMD.res,file="Data/HMD_var_edagger_by_ages_trapezoids.RData")
-
 
